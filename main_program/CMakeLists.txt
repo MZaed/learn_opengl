@@ -14,4 +14,5 @@ target_link_libraries(
         learn_opengl
         PRIVATE
         glfw3_lib
+        glad_lib
 )
