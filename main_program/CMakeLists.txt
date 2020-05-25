@@ -13,5 +13,5 @@ set_target_properties( learn_opengl
 target_link_libraries(
         learn_opengl
         PRIVATE
-        external_target
+        glfw3_lib
 )
