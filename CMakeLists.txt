@@ -3,6 +3,7 @@ project(learn_opengl)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_subdirectory(opengl)
 add_subdirectory(external)
 add_subdirectory(main_program)
 

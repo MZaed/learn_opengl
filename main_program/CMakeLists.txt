@@ -15,4 +15,5 @@ target_link_libraries(
         PRIVATE
         glfw3_lib
         glad_lib
+        opengl_wrapper_lib
 )
