@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -11,9 +10,15 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 const float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
+        +0.5f, +0.5f, 0.0f,
         +0.5f, -0.5f, 0.0f,
-        +0.0f, +0.5f, 0.0f
+        -0.5f, -0.5f, 0.0f,
+        -0.5f, +0.5f, 0.0f,
+};
+
+unsigned int indices[] = {
+        0U, 1U, 3U,
+        1U, 2U, 3U
 };
 
 const char* vertexShaderSource =
@@ -74,12 +79,18 @@ int main()
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject);
 
-    // Create and Setup Vertex Buffer
-    GLuint vertexBufferId = 0;
+    //Create and Setup Vertex Buffer
+    GLuint vertexBufferId = 0U;
     glGenBuffers(1, &vertexBufferId); //Generate buffer id
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId); //Link buffer to vertex buffer and activate the buffer
     //Allocates memory, fills the selected buffer type with given data, size
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    //Create and Setup Index Buffer
+    GLuint indexBufferId = 0U;
+    glGenBuffers(1, &indexBufferId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices, GL_STATIC_DRAW);
 
     //Tell opengl how to make sense of data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)NULL);
@@ -153,7 +164,10 @@ int main()
 
         glUseProgram(shaderProgram);
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        //Wire frame mode, Default is GL_FILL
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+//        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -184,4 +198,5 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
+
 

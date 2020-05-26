@@ -1,19 +1,13 @@
 
-#Create a executable target
-add_executable(learn_opengl main.cpp)
+message(STATUS "Processing main_program")
 
-set_target_properties( learn_opengl
-        PROPERTIES
-        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-)
+link_directories("${CMAKE_SOURCE_DIR}/external/GLFW")
 
-#link the libraries
+add_executable(main main.cpp)
+
 target_link_libraries(
-        learn_opengl
-        PRIVATE
-        glfw3_lib
-        glad_lib
-        opengl_wrapper_lib
+        main
+        PRIVATE glfw
+        PRIVATE glad
 )
+
