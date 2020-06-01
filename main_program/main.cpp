@@ -79,7 +79,7 @@ int main()
     glEnableVertexAttribArray(0);
 
     Shader basicShader("shader/basic.shader");
-    basicShader.Bind();
+    basicShader.bind();
 
 
     // render loop

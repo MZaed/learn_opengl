@@ -2,16 +2,14 @@
 #include <glad/glad.h>
 #include <iostream>
 
-void GLClearError(void)
-{
-    while(glGetError() != GL_NO_ERROR){
+void GLClearError(void) {
+    while (glGetError() != GL_NO_ERROR) {
         //do nothing
     }
 }
 
-bool GLErrorLog(const char * const functionName, const char * const file, int line)
-{
-    while(GLenum error = glGetError()){
+bool GLErrorLog(const char *const functionName, const char *file, int line) {
+    while (GLenum error = glGetError()) {
         std::cout << "GL Error: [" << error << "]" << std::endl;
         std::cout << "Funcation Name: " << functionName << std::endl;
         std::cout << "File Name: " << file << " at Line no. '" << line << "'" << std::endl;

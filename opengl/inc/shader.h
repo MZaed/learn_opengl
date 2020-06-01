@@ -1,29 +1,30 @@
 #pragma once
+
 #include <iostream>
 #include <string>
 #include <glad/glad.h>
 
-struct shaderProgramSourceType
-{
+struct shaderProgramSourceType {
     std::string vertexSource;
     std::string fragmentSource;
 };
 
 
-class Shader
-{
+class Shader {
 public:
-    Shader(const std::string& fileName);
+    Shader(const std::string &fileName);
+
     ~Shader();
 
-    void Bind() const;
-    void UnBind() const;
+    void bind() const;
+
+    void unBind() const;
 
 
     // Set uniforms
-    void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void setUniform4f(const std::string &name, float v0, float v1, float v2, float v3);
 
-    void SetUniform1i(const std::string& name, int value);
+    void setUniform1i(const std::string &name, int value);
 
 //    void SetUniformMat4fv(const std::string & name, const glm::mat4& mat4);
 
@@ -31,12 +32,14 @@ public:
 
 private:
 
-    unsigned int CreateShader(const std::string & vertexShader, const std::string & fragmentShader);
-    shaderProgramSourceType ParseShader(std::string& filePath);
+    unsigned int createShader(const std::string &vertexShader, const std::string &fragmentShader);
 
-    unsigned int CompileShader(const std::string & source, GLenum type);
+    shaderProgramSourceType parseShader(std::string &filePath);
 
-    int GetUniformLocation(const std::string& uniformName);
+    unsigned int compileShader(const std::string &source, GLenum type);
+
+    int getUniformLocation(const std::string &uniformName);
+
     unsigned int m_rendererID;
     std::string m_filePath;
 
