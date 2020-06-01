@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <shader.h>
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -20,26 +22,6 @@ unsigned int indices[] = {
         0U, 1U, 3U,
         1U, 2U, 3U
 };
-
-const char* vertexShaderSource =
-"#version 330 core                          \n"
-"                                           \n"
-"layout (location = 0) in vec3 aVertices;   \n"
-"void main()                                \n"
-"{                                          \n"
-"   gl_Position = vec4(aVertices.xyz, 1.0); \n"
-"}                                          \n"
-"                                           \n";
-
-const char* fragmentShaderSource =
-"#version 330 core                          \n"
-"                                           \n"
-"out vec4 FragColor;                        \n"
-"void main()                                \n"
-"{                                          \n"
-"   FragColor = vec4(1.0, 0.5, 0.2, 1.0);   \n"
-"}                                          \n"
-"                                           \n";
 
 int main()
 {
@@ -96,57 +78,8 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)NULL);
     glEnableVertexAttribArray(0);
 
-    //Create vertex shader
-    GLuint vertexShaderId = 0;
-    vertexShaderId = glCreateShader(GL_VERTEX_SHADER); //Generate ShaderId for a given shader type
-    glShaderSource(vertexShaderId, 1, &vertexShaderSource, NULL); //Update shader source program
-    glCompileShader(vertexShaderId); //Compile shader with given shaderId
-    int success = 0;
-    glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
-
-    if (!success)
-    {
-        int shaderLength = 0;
-        char compilationLog[512] = {0};
-        glGetShaderInfoLog(vertexShaderId, sizeof(compilationLog), &shaderLength, compilationLog);
-        std::cout << "Shader Length = " << shaderLength << std::endl;
-        std::cout << compilationLog << std::endl;
-    }
-
-    //Create fragment shader
-    GLuint fragmentShaderId = 0;
-    fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShaderId, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShaderId);
-    glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
-
-    if (!success)
-    {
-        int shaderLength = 0;
-        char compilationLog[512] = {0};
-        glGetShaderInfoLog(fragmentShaderId, sizeof(compilationLog), &shaderLength, compilationLog);
-        std::cout << "Shader Length = " << shaderLength << std::endl;
-        std::cout << compilationLog << std::endl;
-    }
-
-    //Create program object
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShaderId);
-    glAttachShader(shaderProgram, fragmentShaderId);
-    glLinkProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-
-    if (!success)
-    {
-        unsigned int bufferSize = 512U;
-        int bufferLength = 0U;
-        char infoLog[512] = {0};
-
-        glGetShaderInfoLog(shaderProgram, bufferSize, &bufferLength, infoLog);
-    }
-
-    glDeleteShader(vertexShaderId);
-    glDeleteShader(fragmentShaderId);
+    Shader basicShader("shader/basic.shader");
+    basicShader.Bind();
 
 
     // render loop
@@ -162,7 +95,6 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram);
         glBindVertexArray(vertexArrayObject);
         //Wire frame mode, Default is GL_FILL
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
