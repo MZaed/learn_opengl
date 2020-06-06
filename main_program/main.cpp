@@ -1,7 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <math.h>
 #include <iostream>
 #include <shader.h>
+#include <gl_error_check.h>
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -59,7 +61,7 @@ int main()
     //Create and setup Vertex Array Object
     GLuint vertexArrayObject = 0U;
     glGenVertexArrays(1, &vertexArrayObject);
-    glBindVertexArray(vertexArrayObject);
+    GLCALL(glBindVertexArray(vertexArrayObject));
 
     //Create and Setup Vertex Buffer
     GLuint vertexBufferId = 0U;
@@ -81,35 +83,25 @@ int main()
     Shader basicShader("shader/basic.shader");
     basicShader.bind();
 
-
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
     {
-        // input
-        // -----
         processInput(window);
 
-        // render
-        // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        float timeValue = glfwGetTime();
+        float greenValue = sin(timeValue) / 2.0F + 0.5F;
+        basicShader.setUniform4f("u_color", 0.0F, greenValue, 0.0F, 1.0F);
+
         glBindVertexArray(vertexArrayObject);
-        //Wire frame mode, Default is GL_FILL
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-//        glDrawArrays(GL_TRIANGLES, 0, 3);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
 }
