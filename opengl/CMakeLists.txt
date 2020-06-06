@@ -4,7 +4,7 @@ add_library(opengl)
 
 if (${GNU})
     target_compile_definitions(opengl PUBLIC IS_GNU=1)
-elseif({MSVC})
+elseif(${MSVC})
     target_compile_definitions(opengl PUBLIC IS_MSVC=1)
 else()
     message(FATAL_ERROR "Compiler not defined")
