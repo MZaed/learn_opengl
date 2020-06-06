@@ -2,11 +2,12 @@ message(STATUS "Processing Opengl")
 
 add_library(opengl)
 
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    add_compile_definitions(IS_GNU=1)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_definitions(IS_MSVC=1)
+if (${GNU})
+    target_compile_definitions(opengl PUBLIC IS_GNU=1)
+elseif({MSVC})
+    target_compile_definitions(opengl PUBLIC IS_MSVC=1)
+else()
+    message(FATAL_ERROR "Compiler not defined")
 endif()
 
 target_sources(
