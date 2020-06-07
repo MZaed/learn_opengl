@@ -17,6 +17,7 @@ target_sources(
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/vertex_array.cpp
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/vertex_buffer.cpp
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/index_buffer.cpp
+        PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/texture_buffer2D.cpp
 )
 
 target_include_directories(

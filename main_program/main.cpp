@@ -7,7 +7,8 @@
 #include <vertex_array.h>
 #include <vertex_buffer.h>
 #include <index_buffer.h>
-
+#include <texture_buffer2D.h>
+#include <stb_image.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -17,10 +18,11 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 const float vertices[] = {
-        +0.5f, +0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-        +0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-        -0.5f, +0.5f, 0.0f, 0.5f, 0.5f, 0.5f
+        //Vertices(xyz)     //Color(RGB)     //TextureCoord
+        +0.5f, +0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        +0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+        -0.5f, +0.5f, 0.0f, 0.5f, 0.5f, 0.5f, 0.0f, 1.0f
 };
 
 unsigned int indices[] = {
@@ -74,14 +76,47 @@ int main()
     indexBuffer.write(indices, sizeof(indices));
 
     //Tell opengl how to make sense of data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)NULL);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)12);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)12);
     glEnableVertexAttribArray(1);
 
     Shader basicShader("shader/basic.shader");
     basicShader.bind();
+
+    int width;
+    int height;
+    int nrChannels;
+
+    unsigned char *data = stbi_load("texture/wall.jpg", &width, &height, &nrChannels, 0);
+
+    TextureBuffer2D texture0(GL_TEXTURE0);
+    texture0.bind();
+    texture0.write(width, height, GL_RGB, data);
+    texture0.unBind();
+
+    stbi_image_free(data);
+
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (void*)(6 * sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(2);
+
+
+    stbi_set_flip_vertically_on_load(true);
+    data = stbi_load("texture/awesomeface.png", &width, &height, &nrChannels, 0);
+
+    TextureBuffer2D texture1(GL_TEXTURE1);
+    texture1.bind();
+    texture1.write(width, height, GL_RGBA, data);
+    texture1.unBind();
+
+    stbi_image_free(data);
+
+    texture0.bind();
+    texture1.bind();
+
+    basicShader.setUniform1i("ourTexture0", 0);
+    basicShader.setUniform1i("ourTexture1", 1);
 
     // render loop
     // -----------

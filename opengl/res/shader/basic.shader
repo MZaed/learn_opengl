@@ -3,11 +3,14 @@
 
 layout (location = 0) in vec3 aVertices;
 layout (location = 1) in vec3 aColor;
+layout (location = 2) in vec2 aTexCoord;
 out vec3 oColor;
+out vec2 oTexCoord;
 void main()
 {
    gl_Position = vec4(aVertices.xyz, 1.0);
    oColor = aColor;
+   oTexCoord = aTexCoord;
 }
 
 
@@ -16,9 +19,13 @@ void main()
 
 out vec4 FragColor;
 in vec3 oColor;
+in vec2 oTexCoord;
+
+uniform sampler2D ourTexture0;
+uniform sampler2D ourTexture1;
 
 void main()
 {
-   FragColor = vec4(oColor, 1.0);
+   FragColor = mix(texture(ourTexture0, oTexCoord), texture(ourTexture1, vec2(oTexCoord.x, oTexCoord.y)), 0.2);
 }
 
