@@ -4,6 +4,9 @@
 #include <iostream>
 #include <shader.h>
 #include <gl_error_check.h>
+#include <vertex_array.h>
+#include <vertex_buffer.h>
+#include <index_buffer.h>
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -14,10 +17,10 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 const float vertices[] = {
-        +0.5f, +0.5f, 0.0f,
-        +0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f, +0.5f, 0.0f,
+        +0.5f, +0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+        +0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, +0.5f, 0.0f, 0.5f, 0.5f, 0.5f
 };
 
 unsigned int indices[] = {
@@ -58,27 +61,24 @@ int main()
         return -1;
     }
 
-    //Create and setup Vertex Array Object
-    GLuint vertexArrayObject = 0U;
-    glGenVertexArrays(1, &vertexArrayObject);
-    GLCALL(glBindVertexArray(vertexArrayObject));
+    VertexArray vertexArray;
+    vertexArray.bind();
 
-    //Create and Setup Vertex Buffer
-    GLuint vertexBufferId = 0U;
-    glGenBuffers(1, &vertexBufferId); //Generate buffer id
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId); //Link buffer to vertex buffer and activate the buffer
-    //Allocates memory, fills the selected buffer type with given data, size
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    VertexBuffer vertexBuffer;
+    vertexBuffer.bind();
+    vertexBuffer.write(vertices, sizeof(vertices));
 
     //Create and Setup Index Buffer
-    GLuint indexBufferId = 0U;
-    glGenBuffers(1, &indexBufferId);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices, GL_STATIC_DRAW);
+    IndexBuffer indexBuffer;
+    indexBuffer.bind();
+    indexBuffer.write(indices, sizeof(indices));
 
     //Tell opengl how to make sense of data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)NULL);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)12);
+    glEnableVertexAttribArray(1);
 
     Shader basicShader("shader/basic.shader");
     basicShader.bind();
@@ -92,11 +92,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        float timeValue = glfwGetTime();
-        float greenValue = sin(timeValue) / 2.0F + 0.5F;
-        basicShader.setUniform4f("u_color", 0.0F, greenValue, 0.0F, 1.0F);
-
-        glBindVertexArray(vertexArrayObject);
+        vertexArray.bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
