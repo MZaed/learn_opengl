@@ -5,10 +5,11 @@ add_executable(main main.cpp)
 
 target_link_libraries(
         main
-        PRIVATE glfw
+        INTERFACE glfw
         PRIVATE glad
         PRIVATE stb_image
         PRIVATE opengl
+        INTERFACE glm
 )
 
 add_custom_command(

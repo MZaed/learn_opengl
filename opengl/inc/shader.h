@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 struct shaderProgramSourceType {
     std::string vertexSource;
@@ -26,7 +27,7 @@ public:
 
     void setUniform1i(const std::string &name, int value);
 
-//    void SetUniformMat4fv(const std::string & name, const glm::mat4& mat4);
+    void SetUniformMat4fv(const std::string & name, const glm::mat4& mat4);
 
 
 

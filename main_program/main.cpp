@@ -9,6 +9,9 @@
 #include <index_buffer.h>
 #include <texture_buffer2D.h>
 #include <stb_image.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -117,6 +120,13 @@ int main()
 
     basicShader.setUniform1i("ourTexture0", 0);
     basicShader.setUniform1i("ourTexture1", 1);
+
+    glm::mat4 trans(1.0f);
+    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
+
+    basicShader.SetUniformMat4fv("uTransform", trans);
+
 
     // render loop
     // -----------

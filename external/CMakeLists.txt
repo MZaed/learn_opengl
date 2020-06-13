@@ -6,3 +6,5 @@ add_subdirectory(GLFW)
 add_subdirectory(glad)
 #include stb precompiled library
 add_subdirectory(stb_image)
+#include glm directory
+add_subdirectory(glm)

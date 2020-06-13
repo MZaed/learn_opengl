@@ -1,14 +1,18 @@
 #SHADER VERTEX
 #version 330 core
 
-layout (location = 0) in vec3 aVertices;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
+in layout (location = 0) vec3 aVertices;
+in layout (location = 1) vec3 aColor;
+in layout (location = 2) vec2 aTexCoord;
+
 out vec3 oColor;
 out vec2 oTexCoord;
+
+uniform mat4 uTransform;
+
 void main()
 {
-   gl_Position = vec4(aVertices.xyz, 1.0);
+   gl_Position = uTransform * vec4(aVertices.xyz, 1.0);
    oColor = aColor;
    oTexCoord = aTexCoord;
 }

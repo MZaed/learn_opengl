@@ -31,5 +31,6 @@ target_link_libraries(
         opengl
         PRIVATE glfw
         PRIVATE glad
+        INTERFACE glm
 
 )
