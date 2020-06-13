@@ -121,13 +121,6 @@ int main()
     basicShader.setUniform1i("ourTexture0", 0);
     basicShader.setUniform1i("ourTexture1", 1);
 
-    glm::mat4 trans(1.0f);
-    trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));
-
-    basicShader.SetUniformMat4fv("uTransform", trans);
-
-
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window))
@@ -136,6 +129,12 @@ int main()
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glm::mat4 trans(1.0f);
+        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+        trans = glm::rotate(trans, static_cast<float>(glfwGetTime()), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        basicShader.SetUniformMat4fv("uTransform", trans);
 
         vertexArray.bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
