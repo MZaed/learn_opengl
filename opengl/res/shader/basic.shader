@@ -8,11 +8,13 @@ in layout (location = 2) vec2 aTexCoord;
 out vec3 oColor;
 out vec2 oTexCoord;
 
-uniform mat4 uTransform;
+uniform mat4 uProjection;
+uniform mat4 uView;
+uniform mat4 uModel;
 
 void main()
 {
-   gl_Position = uTransform * vec4(aVertices.xyz, 1.0);
+   gl_Position =  uProjection * uView * uModel * vec4(aVertices.xyz, 1.0);
    oColor = aColor;
    oTexCoord = aTexCoord;
 }
