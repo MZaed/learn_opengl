@@ -77,6 +77,10 @@ glm::vec3 cubePositions[] = {
         glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+static glm::vec3 cameraPos(0.0f, 0.0f, 0.0f);
+static glm::vec3 cameraFront(0.0f, 0.0f, -1.0f);
+static glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
+
 
 int main()
 {
@@ -170,18 +174,7 @@ int main()
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-        glm::vec3 targetPos(0.0f, 0.0f, 0.0f);
-        // rotate camera
-        float radius = 10;
-        glm::vec3 cameraPos(
-                glm::sin(glfwGetTime()) * radius,
-                0.0f,
-                glm::cos(glfwGetTime()) * radius
-                );
-        glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
-
-
-        glm::mat4 view = glm::lookAt(cameraPos, targetPos, cameraUp);
+        glm::mat4 view = glm::lookAt(cameraPos, cameraPos * cameraFront, cameraUp);
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), static_cast<float>(SCR_WIDTH/SCR_HEIGHT), 0.1f, 100.0f);
 
@@ -212,8 +205,36 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow *window)
 {
+    float cameraSpeed = 0.005f;
+    static float netCameraChange = 0.00F;
+
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        cameraPos += cameraSpeed * cameraFront;
+        netCameraChange += cameraSpeed;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        cameraPos -= cameraSpeed * cameraFront;
+        netCameraChange -= cameraSpeed;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        netCameraChange -= cameraSpeed;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        netCameraChange += cameraSpeed;
+    }
+
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
