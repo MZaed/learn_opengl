@@ -25,60 +25,39 @@ const unsigned int SCR_HEIGHT = 600;
 float lastFrameTime = 0;
 
 float vertices[] = {
-      -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-      0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-      -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-      -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-      -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-      0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-      0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-      -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-      -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    0.00f, 0.00f, 0.00f,
+    0.20f, 0.00f, 0.00f,
 
-      -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-      -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-      -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-      -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-      -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-      -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    0.00f, 0.20f, 0.00f,
+    0.20f, 0.20f, 0.00f,
 
-      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-      0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-      0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-      0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    0.00f, 0.40f, 0.00f,
+    0.20f, 0.40f, 0.00f,
 
-      -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-      0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-      -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-      -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    0.00f, 0.60f, 0.00f,
+    0.20f, 0.60f, 0.00f,
 
-      -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-      0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-      0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-      -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-      -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    0.00f, 0.80f, 0.00f,
+    0.20f, 0.80f, 0.00f,
+
+    0.00f, 0.100f, 0.00f,
+    0.20f, 0.100f, 0.00f,
+
 };
 
-glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f),
-        glm::vec3( 2.0f,  5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3( 2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3( 1.3f, -2.0f, -2.5f),
-        glm::vec3( 1.5f,  2.0f, -2.5f),
-        glm::vec3( 1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
+unsigned int indices[] = {
+        0U, 2U, 1U,
+        2U, 3U, 1U,
+
+        2U, 4U, 3U,
+        4U, 5U, 3U,
+
+        4U, 6U, 5U,
+        6U, 7U, 5U,
+
+        6U, 8U, 7U,
+        8U, 9U, 7U,
 };
 
 static glm::vec3 cameraPos(0.0f, 0.0f, 0.0f);
@@ -112,7 +91,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwSetCursorPosCallback(window, mouse_callback);  
     glfwSetScrollCallback(window, scroll_callback); 
     
@@ -129,47 +108,19 @@ int main()
 
     VertexBuffer vertexBuffer;
     vertexBuffer.bind();
-
     vertexBuffer.write(vertices, sizeof(vertices));
 
+    IndexBuffer indexBuffer;
+    indexBuffer.bind();
+    indexBuffer.write(indices, sizeof(indices));
+
     //Tell opengl how to make sense of data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)NULL);
     glEnableVertexAttribArray(0);
 
     Shader basicShader("shader/basic.shader");
     basicShader.bind();
 
-    int width;
-    int height;
-    int nrChannels;
-
-    unsigned char *data = stbi_load("texture/wall.jpg", &width, &height, &nrChannels, 0);
-
-    TextureBuffer2D texture0(GL_TEXTURE0);
-    texture0.bind();
-    texture0.write(width, height, GL_RGB, data);
-    texture0.unBind();
-
-    stbi_image_free(data);
-
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(1);
-
-    stbi_set_flip_vertically_on_load(true);
-    data = stbi_load("texture/awesomeface.png", &width, &height, &nrChannels, 0);
-
-    TextureBuffer2D texture1(GL_TEXTURE1);
-    texture1.bind();
-    texture1.write(width, height, GL_RGBA, data);
-    texture1.unBind();
-
-    stbi_image_free(data);
-
-    texture0.bind();
-    texture1.bind();
-
-    basicShader.setUniform1i("ourTexture0", 0);
-    basicShader.setUniform1i("ourTexture1", 1);
 
     // render loop
     // -----------
@@ -185,24 +136,18 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
         glm::mat4 view = glm::lookAt(cameraPos, cameraPos * cameraFront, cameraUp);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -1.0f));
         glm::mat4 projection = glm::perspective(glm::radians(Zoom), static_cast<float>(SCR_WIDTH/SCR_HEIGHT), 0.1f, 100.0f);
 
         basicShader.SetUniformMat4fv("uView", view);
         basicShader.SetUniformMat4fv("uProjection", projection);
 
         vertexArray.bind();
+        glm::mat4 model = glm::mat4(1.0f);
+        basicShader.SetUniformMat4fv("uModel", model);
 
-        for(unsigned int i = 0; i < 10; i++)
-        {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            basicShader.SetUniformMat4fv("uModel", model);
+        glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, NULL);
 
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
 
         glfwSwapBuffers(window);
         glfwPollEvents();
